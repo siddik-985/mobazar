@@ -20,14 +20,15 @@
 
 ## Recommended technology stack
 - Frontend and admin panel: Next.js (move beyond the current static HTML/CSS/vanilla JavaScript storefront).
-- Backend/data: Supabase Postgres database, Auth for admin sign-in, and Storage for product images.
+- Backend/data: Supabase Postgres database and Auth for admin sign-in; store product image files on ImgBB and save only image URLs in Supabase.
 - Hosting/deployment: Vercel, connected to GitHub.
-- Secure data access: enforce Row Level Security (RLS); supplier purchase cost and supplier identity are private/admin-only; never place service-role secrets in browser code.
+- Product images: use ImgBB image hosting for the pilot to reduce Supabase Storage usage; save stable image URLs in the products table and keep a backup of original photos. Verify ImgBB limits and reliability before relying on it for production.
+- Secure data access: enforce Row Level Security (RLS); supplier purchase cost and supplier identity are private/admin-only; never expose API keys or service-role secrets in browser code.
 
 ## Build order (admin-first)
 1. Audit existing storefront files and plan a careful Next.js migration without losing the current design/features.
 2. Build secure admin login.
-3. Build product management: upload photo, name, category, unit, supplier purchase cost (private), selling price, stock/availability, publish/unpublish.
+3. Build product management: add ImgBB-hosted image URL/photo upload workflow, name, category, unit, supplier purchase cost (private), selling price, stock/availability, publish/unpublish.
 4. Build supplier records privately (supplier/shop name, address/contact and agreed purchase terms), never customer-visible.
 5. Create customer storefront that reads published products from the database and displays only MoBazar branding, product info, selling price, and availability.
 6. Add delivery-area validation for the three pilot unions.
